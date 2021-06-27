@@ -1,22 +1,9 @@
-/**
- * theMatrix.initialize and resetRain accept an opts object...
- * @param {Array} charset - default size 42, starting at char code 65393
- * @param {Array} fontColors - rgb strings, e.g. '0,255,0', empty array defaults to random
- * @param {String} fontFace - defaults to symbol
- * @param {Boolean} fontGravity - default true aka down
- * @param {Function} fontSize - Math.floor( window.innerWidth / 100 )
- * @param {Number} fontRenderSpeed - ms, default is 80ms
- * @param {Number} fontFadeSpeed - font fade speed, defaults to 0.05
- * @param {String} themeColor - rgb, default is 0,0,0 or black
- * @param {Boolean} threeDee - defaults to true, randomizes font sizes for 3d effect
- */
-
   // random functions
   const randomArrayIndex = ( length = 0 ) => Math.floor( Math.random() * length );
   const randomRoll = ( size ) => Math.abs( Math.random() * size );
 
   const digitalRain = {
-    canvas: document.getElementById('digital-rain'),
+    canvas: document.getElementById( 'digital-rain' ),
     colors: [
       ['255,0,0', '255,255,255', '0,0,255'], // red, white, blue
       ['0,255,0', '255,255,255'],  // green, white
@@ -30,47 +17,48 @@
       ** and populate with fixed x position, random y start position
       ** and font gravity, font color, and font size
       ****/
-      return Array.from( new Array( Math.ceil( window.innerWidth / this.config.fontSize() ) ),
-                              ( x, i ) => ({
-                                'fontColor': this.selectFontColor( opts ),
-                                'fontGravity': this.selectFontGravity( opts ),
-                                'fontSize': this.config.fontSize(),
-                                'xPosition': ( i * this.config.fontSize() ),
-                                'yPosition': randomArrayIndex( randomRoll(100) * this.config.fontSize()),
-                              })
-                )
+      const noc = digitalRain.config.numberOfColumns = Math.ceil( window.innerWidth / this.config.initialFontSize );
+      return Array.from( new Array( noc ), ( x, i ) => ( {
+                          'fontColor': this.selectFontColor( opts ),
+                          'fontGravity': opts.fontGravity,
+                          'fontSize': opts.initialFontSize,
+                          'xPosition': ( i * opts.initialFontSize ),
+                          'yPosition': randomArrayIndex( randomRoll( noc ) * opts.initialFontSize ),
+                        } ) );
     },
     config: {
       'charset': Array.from( new Array(42), (x, i) => String.fromCharCode(i + 65393) ),
+      'colorsIndex': -1,
       'fontFace': 'symbol',
       'fontFadeSpeed': 0.05,
-      'fontRenderSpeed': 80,
-      'fontSize': () => Math.floor( window.innerWidth / 100 ),
+      'fontGravity': 1,
+      'fontRenderSpeed': 60,
       'fontSizeOffsets': [ 0.3, 0.6, 1.0, 1.3, 1.6, 2.0, 3.0 ],
       'fontSpacing': 4,
+      'initialFontSize': 8,
       'themeColor': '0,0,0',
+      'threeDee': false,
     },
-    resetRain: function( opts = {} ) {
+    resetRain: function( opts ) {
       clearInterval( digitalRain.rainDrops );
       makeItRain( opts );
     },
     initialize: function( opts ) {
       makeItRain( opts );
     },
-    selectFontColor: ( { fontColors = [] } ) => { 
-      if( fontColors.length == 0 ){
-        fontColors = digitalRain.colors[randomArrayIndex(digitalRain.colors.length)]; 
-      }
+    selectFontColor: ( { colorsIndex } ) => { 
+      colorsIndex = ( colorsIndex == -1 ) ? randomArrayIndex(digitalRain.colors.length) : colorsIndex; 
+      fontColors = digitalRain.colors[ colorsIndex ];
       return fontColors[ randomArrayIndex(fontColors.length) ];
     },
-    selectFontGravity: ( { fontGravity = true } ) => {
+    selectFontGravity: ( { fontGravity } ) => {
       return fontGravity || Math.round( Math.random() );
     },
-    selectFontSize: ( { threeDee = false } ) => {
-      const { fontSizeOffsets, fontSize } = digitalRain.config;
+    selectFontSize: ( { initialFontSize, threeDee } ) => {
+      const { fontSizeOffsets } = digitalRain.config;
       return threeDee
-        && fontSize() * fontSizeOffsets[ randomArrayIndex(fontSizeOffsets.length) ]
-        || fontSize();
+        && initialFontSize * fontSizeOffsets[ randomArrayIndex(fontSizeOffsets.length) ]
+        || initialFontSize;
     },
   };
 
@@ -86,7 +74,7 @@
     cnvs.setAttribute('style', `background: rgb( ${ what.themeColor } )`);
     cnvs.setAttribute('height', window.innerHeight);
     cnvs.setAttribute('width', window.innerWidth);
-    const ctx = digitalRain.context = cnvs.getContext('2d', { alpha: false, desynchronized: true });
+    const ctx = cnvs.getContext('2d', { alpha: false, desynchronized: true });
     ctx.fillStyle = `rgba( ${ what.themeColor } )`;
     ctx.fillRect( 0, 0, cnvs.width, cnvs.height );
 
@@ -94,8 +82,6 @@
 
     // draw a character at an interval based on font speed
     digitalRain.rainDrops = setInterval( () => {
-      const cnvs = digitalRain.canvas;
-      const ctx = digitalRain.context;
       // overlays transparent background color for fade effect
       ctx.fillStyle = `rgba( ${ what.themeColor }, ${ what.fontFadeSpeed } )`;
       ctx.fillRect( 0, 0, cnvs.width, cnvs.height );
@@ -117,7 +103,7 @@
           column.fontColor = digitalRain.selectFontColor( what );
           column.fontGravity = digitalRain.selectFontGravity( what );
           column.fontSize = digitalRain.selectFontSize( what );
-          column.yPosition = randomRoll(80) * column.fontSize;
+          column.yPosition = randomRoll( what.numberOfColumns ) * column.fontSize;
         }
         else {
           column.yPosition = Math.abs( column.yPosition + ( column.fontGravity ? column.fontSize + what.fontSpacing : -column.fontSize - what.fontSpacing ) );
@@ -127,8 +113,9 @@
   };
 
 digitalRain.initialize({
-  fontColors: digitalRain.colors[2],
-  fontGravity: false,
+  colorsIndex: 2,
+  fontGravity: 0,
+  threeDee: true,
 });
 
 window.addEventListener('resize', e => {
@@ -136,13 +123,11 @@ window.addEventListener('resize', e => {
 }, false);
 
 window.addEventListener('keydown', e => {
-  let fontColors = digitalRain.config.fontColors;
-  let fontGravity = digitalRain.config.fontGravity;
-  let threeDee = digitalRain.config.threeDee;
+  let { colorsIndex, fontGravity, threeDee } = digitalRain.config;
   let dirty = false;
   switch( e.key ){
     case 'c':
-      fontColors = digitalRain.colors[randomArrayIndex( digitalRain.colors.length )];
+      colorsIndex = ( colorsIndex < digitalRain.colors.length - 1 ) ? colorsIndex + 1 : -1;
       dirty = true;
       break;
     case 'g':
@@ -156,5 +141,5 @@ window.addEventListener('keydown', e => {
     default:
       break;
   }
-  return !dirty || digitalRain.resetRain( { fontColors, fontGravity, threeDee } );
+  return !dirty || digitalRain.resetRain( { colorsIndex, fontGravity, threeDee } );
 }, false );
