@@ -1,6 +1,14 @@
-# metaforiq v1.1
+# metaforiq v1.2
 
 ## digital rain in a browser
+
+### Mobile Experience using Touch
+
+* touch with one finger to change color
+* touch with two fingers to change gravity
+* touch with three fingers to change 2d/3d effect
+
+### Desktop Experience using Keyboard
 
 * keypress c to change color scheme
 * keypress g to toggle gravity on or off

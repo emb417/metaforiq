@@ -143,3 +143,25 @@ window.addEventListener('keydown', e => {
   }
   return !dirty || digitalRain.resetRain( { colorsIndex, fontGravity, threeDee } );
 }, false );
+
+window.addEventListener('touchstart', e => {
+  let { colorsIndex, fontGravity, threeDee } = digitalRain.config;
+  let dirty = false;
+  switch( e.touches.length ){
+    case 1:
+      colorsIndex = ( colorsIndex < digitalRain.colors.length - 1 ) ? colorsIndex + 1 : -1;
+      dirty = true;
+      break;
+    case 2:
+      fontGravity = !digitalRain.config.fontGravity;
+      dirty = true;
+      break;
+    case 3:
+      threeDee = !digitalRain.config.threeDee;
+      dirty = true;
+      break;
+    default:
+      break;
+  }
+  return !dirty || digitalRain.resetRain( { colorsIndex, fontGravity, threeDee } );
+}, false );
