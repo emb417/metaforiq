@@ -14,13 +14,13 @@ window.addEventListener('resize', e => {
  * 
  */
 
-let xDown = null;                                                        
+let xDown = null;
 let yDown = null;
 
 document.addEventListener('touchstart', e => {
-  const firstTouch = e.touches[0];                                      
-  xDown = firstTouch.clientX;                                      
-  yDown = firstTouch.clientY;                                      
+  const firstTouch = e.touches[0];
+  xDown = firstTouch.clientX;
+  yDown = firstTouch.clientY;
 }, false);
 
 document.addEventListener('touchmove', e => {
@@ -28,7 +28,7 @@ document.addEventListener('touchmove', e => {
       return;
   }
 
-  const xUp = e.touches[0].clientX;                          
+  const xUp = e.touches[0].clientX;
   const yUp = e.touches[0].clientY;
 
   const xDiff = xDown - xUp;
