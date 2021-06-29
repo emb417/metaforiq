@@ -11,7 +11,7 @@ const rainMessages = {
     "swipe down to change 2d/3d effect",
     "swipe right to toggle messages",
   ],
-  initialize: function( fontSize = 32, fontFace = 'symbol', messageX = 0, messageY  = 0, typingSpeed = 42 ) {
+  initialize: function( fontSize = 32, fontFace = 'symbol', messageX = 0, messageY = 0, typingSpeed = 42 ) {
     this.fontSize = fontSize;
     this.fontFace = fontFace;
     this.messageX = messageX || Math.floor( window.innerWidth / 4 );

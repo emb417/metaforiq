@@ -1,4 +1,4 @@
-# metaforiq v1.3.4
+# metaforiq v1.4
 
 ## digital rain in a browser
 
@@ -12,6 +12,7 @@
 * v1.3.2 - ...added GA4 via GTM
 * v1.3.3 - ...stopped default scrolling on swipe up/down
 * v1.3.4 - ...added viewport meta and fixed message toggle bug
+* v1.4 - ...added help messages
 
 ### Mobile Experience using Touch
 
