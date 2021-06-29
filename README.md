@@ -1,4 +1,4 @@
-# metaforiq v1.3.1
+# metaforiq v1.3.2
 
 ## digital rain in a browser
 
@@ -9,6 +9,7 @@
 * v1.2 - ...added mobile touch interactions
 * v1.3 - ...added messages with keyboard and swipe interactions
 * v1.3.1 - ...added more swipes
+* v1.3.2 - ...added GA4 via GTM
 
 ### Mobile Experience using Touch
 
