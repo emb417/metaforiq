@@ -1,10 +1,16 @@
 const rainMessages = {
   canvas: document.getElementById( 'rain-messages' ),
   clearMessage: function( delay ) {
-    setTimeout( ()  => {
+    rainMessages.clearing = setTimeout( ()  => {
       rainMessages.context.clearRect( 0, 0, rainMessages.canvas.width, rainMessages.canvas.height );
     }, delay );
   },
+  help: [
+    "swipe left to change colors",
+    "swipe up to change gravity",
+    "swipe down to change 2d/3d effect",
+    "swipe right to toggle messages",
+  ],
   initialize: function( fontSize = 40, fontFace = 'symbol', messageX = 0, messageY  = 0, typingSpeed = 42 ) {
     this.fontSize = fontSize;
     this.fontFace = fontFace;
@@ -88,10 +94,13 @@ const rainMessages = {
     "Facing all that you fear will free you from yourself.",
   ],
   startMessage: function() {
+    this.status = "active";
+    this.context.font = `small-caps ${ this.fontSize }pt ${ this.fontFace }`;
+    this.context.fillStyle = 'white';
+    const message = this.messages[ randomArrayIndex( this.messages.length ) ];
+    this.typing( message, this.messageX, this.messageY, ( this.fontSize * 1.3 ), this.messageX );
+    this.clearMessage( 6000 );
     this.doMessage = setInterval( () => {
-      rainMessages.status = "active";
-      rainMessages.context.font = `small-caps ${ rainMessages.fontSize }pt ${ rainMessages.fontFace }`;
-      rainMessages.context.fillStyle = 'white';
       const message = rainMessages.messages[ randomArrayIndex( rainMessages.messages.length ) ];
       rainMessages.typing( message, rainMessages.messageX, rainMessages.messageY, ( rainMessages.fontSize * 1.3 ), rainMessages.messageX );
       rainMessages.clearMessage( 6000 );
@@ -99,9 +108,10 @@ const rainMessages = {
   },
   stopMessage: function() {
     this.status = "disabled";
-    this.clearMessage( 0 );
+    clearTimeout( this.clearing );
     clearInterval( this.startTyping );
     clearInterval( this.doMessage );
+    this.clearMessage( 0 );
   },
   typing: function( str = '', startX = 0, startY = 0, lineHeight = 32, padding = 10 ) {
     let cursorX = startX;
@@ -128,51 +138,3 @@ const rainMessages = {
 };
 
 rainMessages.initialize();
-
-window.addEventListener('resize', e => {
-  rainMessages.stopMessage();
-  rainMessages.initialize();
-}, false);
-
-window.addEventListener('keydown', e => {
-  if( e.key == 'm' && rainMessages.status === "active" ){
-    rainMessages.stopMessage();
-  }
-  else if( e.key == 'm' && rainMessages.status === "disabled" ){
-    rainMessages.startMessage();
-  }
-}, false );
-
-let xDown = null;                                                        
-let yDown = null;
-
-document.addEventListener('touchstart', e => {
-  e.preventDefault();
-  const firstTouch = e.touches[0];                                      
-  xDown = firstTouch.clientX;                                      
-  yDown = firstTouch.clientY;                                      
-}, false);
-
-document.addEventListener('touchmove', e => {
-  e.preventDefault();
-  if ( ! xDown || ! yDown ) {
-      return;
-  }
-
-  const xUp = e.touches[0].clientX;                                    
-  const yUp = e.touches[0].clientY;
-
-  const xDiff = xDown - xUp;
-  const yDiff = yDown - yUp;
-
-  if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) { // most significant
-      if ( xDiff > 0 ) {
-        rainMessages.stopMessage();
-      } else {
-        rainMessages.startMessage();
-      }                       
-  }
-
-  xDown = null;
-  yDown = null;
-}, false);

@@ -1,4 +1,4 @@
-# metaforiq v1.3
+# metaforiq v1.3.1
 
 ## digital rain in a browser
 
@@ -8,14 +8,14 @@
 * v1.1 - ...added initialFontSize opt
 * v1.2 - ...added mobile touch interactions
 * v1.3 - ...added messages with keyboard and swipe interactions
+* v1.3.1 - ...added more swipes
 
 ### Mobile Experience using Touch
 
-* touch with one finger to change color
-* touch with two fingers to change gravity
-* touch with three fingers to change 2d/3d effect
-* swipe left to stop messages
+* swipe left to change colors
+* swipe up to change gravity
 * swipe right to start messages
+* swipe down to change 2d/3d effect
 
 ### Desktop Experience using Keyboard
 
