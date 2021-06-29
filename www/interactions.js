@@ -43,7 +43,7 @@ document.addEventListener('touchmove', e => {
         if ( rainMessages.status === "active" ) {
           rainMessages.stopMessage();
         } else {
-          rainMessages.startMessage();
+          rainMessages.initialize();
         }
       }
   } else {
