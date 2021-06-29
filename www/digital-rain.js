@@ -71,10 +71,9 @@
     digitalRain.config = what;
     const cnvs = digitalRain.canvas;
     // set background, height and width
-    cnvs.setAttribute('style', `background: rgb( ${ what.themeColor } )`);
     cnvs.setAttribute('height', window.innerHeight);
     cnvs.setAttribute('width', window.innerWidth);
-    const ctx = cnvs.getContext('2d', { alpha: false, desynchronized: true });
+    const ctx = cnvs.getContext('2d', { desynchronized: true });
     ctx.fillStyle = `rgba( ${ what.themeColor } )`;
     ctx.fillRect( 0, 0, cnvs.width, cnvs.height );
 
@@ -114,7 +113,9 @@
 
 digitalRain.initialize({
   colorsIndex: 2,
+  fontFadeSpeed: 0.06,
   fontGravity: 0,
+  fontRenderSpeed: 80,
   threeDee: true,
 });
 
@@ -165,3 +166,4 @@ window.addEventListener('touchstart', e => {
   }
   return !dirty || digitalRain.resetRain( { colorsIndex, fontGravity, threeDee } );
 }, false );
+
