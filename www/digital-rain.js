@@ -4,117 +4,98 @@
 
   const digitalRain = {
     canvas: document.getElementById( 'digital-rain' ),
+    charset: Array.from( new Array(53), (x, i) => String.fromCharCode( i + 65382 ) ),
     colors: [
-      ['255,0,0', '255,255,255', '0,0,255'], // red, white, blue
-      ['0,255,0', '255,255,255'],  // green, white
-      ['255,95,31', '255,255,255', '255,255,0'],  // orange, white, yellow
-      ['255,0,255', '255,255,255', '255,255,0'],  // purple, white, yellow
+      ['255,0,0', '248,36,164'], // red, pink
       ['0,255,255', '255,0,255', '255,95,31'],  // aqua, purple, orange
+      ['255,0,0'], // red
+      ['255,95,31', '255,255,255', '255,255,0'],  // orange, white, yellow
+      ['255,0,0','0,0,255'], // red, blue
+      ['255,0,255'],  // purple
+      ['0,255,0', '255,255,0'],  // green, yellow
+      ['0,0,255'],  // blue
+      ['255,0,255', '255,255,0'],  // purple, yellow
+      ['0,255,0'],  // green
+      ['255,0,0', '255,255,255', '0,0,255'], // red, white, blue
+      ['255,255,0'],  // yellow
+      ['0,255,0', '255,255,255'],  // green, white
+      ['0,255,255'],  // aqua
+      ['0,255,0', '255,0,0'],  // green, red
     ],
-    columns: function( opts ) {
+    fontFace: 'symbol',
+    fontFadeSpeed: 0.2,
+    fontRenderSpeed: 80,
+    fontSizeOffsets: [ 0.3, 0.6, 1.0, 1.3, 1.6, 2.0 ],
+    fontSpacing: 4,
+    initialFontSize: 10,
+    initialize: function( colorsIndex = 4, gravity = 0, threeDee = true ) {
+      this.colorsIndex = colorsIndex;
+      this.gravity = gravity;
+      this.threeDee = threeDee;
+      const cnvs = digitalRain.canvas;
+      // set background, height and width
+      cnvs.setAttribute('height', window.innerHeight);
+      cnvs.setAttribute('width', window.innerWidth);
+      const ctx = this.context = cnvs.getContext('2d', { desynchronized: true });
+      ctx.fillStyle = `rgba( ${ digitalRain.themeColor } )`;
+      ctx.fillRect( 0, 0, cnvs.width, cnvs.height );
+      this.makeItRain();
+    },
+    makeItRain: function() {
       /**** 
       ** create array of columns based on canvas width and font size
-      ** and populate with fixed x position, random y start position
-      ** and font gravity, font color, and font size
+      ** and initialize each column with an x position and random y start position
+      ** also initialize each column with an initial font color, gravity, and font size
       ****/
-      const noc = digitalRain.config.numberOfColumns = Math.ceil( window.innerWidth / this.config.initialFontSize );
-      return Array.from( new Array( noc ), ( x, i ) => ( {
-                          'fontColor': this.selectFontColor( opts ),
-                          'fontGravity': opts.fontGravity,
-                          'fontSize': opts.initialFontSize,
-                          'xPosition': ( i * opts.initialFontSize ),
-                          'yPosition': randomArrayIndex( randomRoll( noc ) * opts.initialFontSize ),
+      const noc = this.numberOfColumns = Math.ceil( window.innerWidth / this.initialFontSize );
+      const columns = Array.from( new Array( noc ), ( x, i ) => ( {
+                          'fontColor': this.selectFontColor(),
+                          'gravity': this.gravity,
+                          'fontSize': this.initialFontSize,
+                          'xPosition': ( i * this.initialFontSize ),
+                          'yPosition': randomRoll( this.canvas.height ),
                         } ) );
+      // draw a character at an interval based on font speed
+      this.rainDrops = setInterval( () => {
+        const ctx = digitalRain.context;
+        // overlays transparent background color for fade effect
+        ctx.fillStyle = `rgba( ${ digitalRain.themeColor }, ${ digitalRain.fontFadeSpeed } )`;
+        ctx.fillRect( 0, 0, digitalRain.canvas.width, digitalRain.canvas.height );
+  
+        // what is the matrix, columns of chaotic beauty
+        columns.map( ( column ) => {
+          // set font color, size and face
+          ctx.fillStyle = `rgba( ${ column.fontColor } ) `;
+          ctx.font = `${ column.fontSize }pt ${ digitalRain.fontFace }`;
+          // grab a random character from the charset and draw in column x at position y
+          ctx.fillText( digitalRain.charset[ randomArrayIndex(digitalRain.charset.length) ],
+                        column.xPosition,
+                        column.yPosition
+                      );
+          // randomly decide to get new random starting position
+          // OR draw next character below previous character
+          if( ( column.gravity && column.yPosition > ( randomRoll(10) * digitalRain.canvas.height ) )
+          || ( !column.gravity && column.yPosition < ( digitalRain.canvas.height / randomRoll(20) ) ) ) {
+            column.fontColor = digitalRain.selectFontColor();
+            column.gravity = ( this.gravity === 2 ) ? Math.round( Math.random() ) : this.gravity;
+            column.fontSize = this.threeDee && this.initialFontSize * this.fontSizeOffsets[ randomArrayIndex(this.fontSizeOffsets.length) ] || this.initialFontSize;
+            column.yPosition = randomRoll( digitalRain.canvas.height );
+          }
+          else {
+            column.yPosition = Math.abs( column.yPosition + ( column.gravity ? column.fontSize + digitalRain.fontSpacing : -column.fontSize - digitalRain.fontSpacing ) );
+          }
+        });
+      }, this.fontRenderSpeed );
     },
-    config: {
-      'charset': Array.from( new Array(42), (x, i) => String.fromCharCode(i + 65393) ),
-      'colorsIndex': -1,
-      'fontFace': 'symbol',
-      'fontFadeSpeed': 0.05,
-      'fontGravity': 1,
-      'fontRenderSpeed': 60,
-      'fontSizeOffsets': [ 0.3, 0.6, 1.0, 1.3, 1.6, 2.0, 3.0 ],
-      'fontSpacing': 4,
-      'initialFontSize': 8,
-      'themeColor': '0,0,0',
-      'threeDee': false,
+    resetRain: function( colorsIndex, gravity, threeDee ) {
+      clearInterval( this.rainDrops );
+      this.initialize( colorsIndex, gravity, threeDee );
     },
-    resetRain: function( opts ) {
-      clearInterval( digitalRain.rainDrops );
-      makeItRain( opts );
+    selectFontColor: function() { 
+      const fontColors = this.colors[ ( this.colorsIndex === -1 ) ? randomArrayIndex( this.colors.length ) : this.colorsIndex ];
+      return fontColors[ randomArrayIndex( fontColors.length ) ];
     },
-    initialize: function( opts ) {
-      makeItRain( opts );
-    },
-    selectFontColor: ( { colorsIndex } ) => { 
-      colorsIndex = ( colorsIndex == -1 ) ? randomArrayIndex(digitalRain.colors.length) : colorsIndex; 
-      fontColors = digitalRain.colors[ colorsIndex ];
-      return fontColors[ randomArrayIndex(fontColors.length) ];
-    },
-    selectFontGravity: ( { fontGravity } ) => {
-      return fontGravity || Math.round( Math.random() );
-    },
-    selectFontSize: ( { initialFontSize, threeDee } ) => {
-      const { fontSizeOffsets } = digitalRain.config;
-      return threeDee
-        && initialFontSize * fontSizeOffsets[ randomArrayIndex(fontSizeOffsets.length) ]
-        || initialFontSize;
-    },
+    themeColor: '0,0,0',
   };
 
-  const makeItRain = ( opts = {} ) => {
-    // config object, spreads opts after defaults are set
-    const what = {
-      ...digitalRain.config,
-      ...opts
-    };
-    digitalRain.config = what;
-    const cnvs = digitalRain.canvas;
-    // set background, height and width
-    cnvs.setAttribute('height', window.innerHeight);
-    cnvs.setAttribute('width', window.innerWidth);
-    const ctx = cnvs.getContext('2d', { desynchronized: true });
-    ctx.fillStyle = `rgba( ${ what.themeColor } )`;
-    ctx.fillRect( 0, 0, cnvs.width, cnvs.height );
-
-    const columns = digitalRain.columns( what );
-
-    // draw a character at an interval based on font speed
-    digitalRain.rainDrops = setInterval( () => {
-      // overlays transparent background color for fade effect
-      ctx.fillStyle = `rgba( ${ what.themeColor }, ${ what.fontFadeSpeed } )`;
-      ctx.fillRect( 0, 0, cnvs.width, cnvs.height );
-
-      // what is the matrix, columns of chaotic beauty
-      columns.map( ( column ) => {
-        // set font color, size and face
-        ctx.fillStyle = `rgba( ${ column.fontColor } ) `;
-        ctx.font = `${ column.fontSize }pt ${ what.fontFace }`;
-        // grab a random character from the charset and draw in column x at position y
-        ctx.fillText( what.charset[ randomArrayIndex(what.charset.length) ],
-                      column.xPosition,
-                      column.yPosition
-                    );
-        // randomly decide to get new random starting position
-        // OR draw next character below previous character
-        if( ( column.fontGravity && column.yPosition > ( randomRoll(10) * cnvs.height ) )
-        || ( !column.fontGravity && column.yPosition < ( cnvs.height / randomRoll(20) ) ) ) {
-          column.fontColor = digitalRain.selectFontColor( what );
-          column.fontGravity = digitalRain.selectFontGravity( what );
-          column.fontSize = digitalRain.selectFontSize( what );
-          column.yPosition = randomRoll( what.numberOfColumns ) * column.fontSize;
-        }
-        else {
-          column.yPosition = Math.abs( column.yPosition + ( column.fontGravity ? column.fontSize + what.fontSpacing : -column.fontSize - what.fontSpacing ) );
-        }
-      });
-    }, what.fontRenderSpeed );
-  };
-
-digitalRain.initialize({
-  colorsIndex: 2,
-  fontFadeSpeed: 0.06,
-  fontGravity: 0,
-  fontRenderSpeed: 80,
-  threeDee: true,
-});
+digitalRain.initialize();

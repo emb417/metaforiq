@@ -5,7 +5,7 @@
 
 window.addEventListener('resize', e => {
   rainMessages.stopMessage();
-  digitalRain.resetRain();
+  digitalRain.resetRain( digitalRain.colorsIndex, digitalRain.gravity, digitalRain.threeDee );
   rainMessages.initialize();
 }, false);
 
@@ -34,11 +34,11 @@ document.addEventListener('touchmove', e => {
   const xDiff = xDown - xUp;
   const yDiff = yDown - yUp;
 
-  let { colorsIndex, fontGravity, threeDee } = digitalRain.config;
+  let { colors, colorsIndex, gravity, threeDee } = digitalRain;
   if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) { // most significant
       if ( xDiff > 0 ) {
-      colorsIndex = ( colorsIndex < digitalRain.colors.length - 1 ) ? colorsIndex + 1 : -1;
-      digitalRain.resetRain( { colorsIndex } ) 
+        colorsIndex = ( colorsIndex < colors.length - 1 ) ? colorsIndex + 1 : -1;
+        digitalRain.resetRain( colorsIndex, gravity, threeDee );
       } else {
         if ( rainMessages.status === "active" ) {
           rainMessages.stopMessage();
@@ -48,11 +48,11 @@ document.addEventListener('touchmove', e => {
       }
   } else {
     if ( yDiff > 0 ) {
-      fontGravity = !digitalRain.config.fontGravity;
-      digitalRain.resetRain( { fontGravity } )
+      gravity = ( gravity === 2 ) ? 0 : gravity + 1;
+      digitalRain.resetRain( colorsIndex, gravity, threeDee );
     } else {
-      threeDee = !digitalRain.config.threeDee;
-      digitalRain.resetRain( { threeDee } )
+      threeDee = !threeDee;
+      digitalRain.resetRain( colorsIndex, gravity, threeDee );
     }
   }
 
@@ -75,23 +75,23 @@ else if( e.key == 'm' && rainMessages.status === "disabled" ){
 }
 
 // digitalRain event handling
-let { colorsIndex, fontGravity, threeDee } = digitalRain.config;
+let { colors, colorsIndex, gravity, threeDee } = digitalRain;
 let dirty = false;
 switch( e.key ){
   case 'c':
-    colorsIndex = ( colorsIndex < digitalRain.colors.length - 1 ) ? colorsIndex + 1 : -1;
+    colorsIndex = ( colorsIndex < colors.length - 1 ) ? colorsIndex + 1 : -1;
     dirty = true;
     break;
   case 'g':
-    fontGravity = !digitalRain.config.fontGravity;
+    gravity = ( gravity === 2 ) ? 0 : gravity + 1;
     dirty = true;
     break;
   case 't':
-    threeDee = !digitalRain.config.threeDee;
+    threeDee = !threeDee;
     dirty = true;
     break;
   default:
     break;
 }
-return !dirty || digitalRain.resetRain( { colorsIndex, fontGravity, threeDee } );
+return !dirty || digitalRain.resetRain( colorsIndex, gravity, threeDee );
 }, false );
