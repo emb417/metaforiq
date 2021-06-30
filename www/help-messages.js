@@ -11,12 +11,14 @@ const helpMessages = {
     this.messageX = messageX;
     this.messageY = messageY;
     this.typingSpeed = typingSpeed;
-    this.messages.push( "Welcome to Metaforiq" );
-    this.messages.push( "Some hints for you..." );
-    this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe up' : 'press g' } to change gravity` );
-    this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe right' : 'press m' } to toggle messages` );
-    this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe down' : 'press t' } to change 2d/3d effect` );
-    this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe left' : 'press c' } to change colors` );
+    if( this.messages.length === 0 ){
+      this.messages.push( "Welcome to Metaforiq" );
+      this.messages.push( "Some hints for you..." );
+      this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe up' : 'press g' } to change gravity` );
+      this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe left' : 'press c' } to change colors` );
+      this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe down' : 'press t' } to change 2d/3d effect` );
+      this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe right' : 'press m' } to toggle messages` );
+    }
     const cnvs = this.canvas;
     this.context = cnvs.getContext( '2d', { desynchronized: true } );
     cnvs.setAttribute( 'height', window.innerHeight );
@@ -28,6 +30,9 @@ const helpMessages = {
   },
   messages: [],
   startMessage: function() {
+    if ( this.status === "active" ){
+      this.stopMessage();
+    }
     this.status = "active";
     this.context.font = `small-caps ${ this.fontSize }pt ${ this.fontFace }`;
     this.context.fillStyle = 'white';

@@ -1,4 +1,4 @@
-# metaforiq v2.1
+# metaforiq v2.2
 
 ## digital rain in a browser
 
@@ -15,6 +15,7 @@
 * v1.4 - ...added help messages
 * v2.0 - refactored digital-rain.js, added more colors, and a gravity option (up)
 * v2.1 - delay rain messages until after help messages
+* v2.2 - added keypress h and two-finger tap to toggle help messages
 
 ### Mobile Experience using Touch
 

@@ -55,9 +55,19 @@ document.addEventListener('touchmove', e => {
       digitalRain.resetRain( colorsIndex, gravity, threeDee );
     }
   }
-
   xDown = null;
   yDown = null;
+}, false);
+
+document.addEventListener( 'touchend', e => {
+  if ( e.changedTouches.length > 1 ){ 
+    if( helpMessages.status === "active" ){
+      helpMessages.stopMessage();
+    }
+    else {
+      helpMessages.initialize();
+    }
+  }
 }, false);
 
 /*****************************
@@ -66,32 +76,44 @@ document.addEventListener('touchmove', e => {
  */
 
 window.addEventListener('keydown', e => {
-// rainMessages event handling
-if( e.key == 'm' && rainMessages.status === "active" ){
-  rainMessages.stopMessage();
-}
-else if( e.key == 'm' && rainMessages.status === "disabled" ){
-  rainMessages.startMessage();
-}
+  // helpMessages
+  if ( e.key == 'h' ) {
+    if( helpMessages.status === "active" ){
+      helpMessages.stopMessage();
+    }
+    else {
+      helpMessages.initialize();
+    }
+  }
 
-// digitalRain event handling
-let { colors, colorsIndex, gravity, threeDee } = digitalRain;
-let dirty = false;
-switch( e.key ){
-  case 'c':
-    colorsIndex = ( colorsIndex < colors.length - 1 ) ? colorsIndex + 1 : -1;
-    dirty = true;
-    break;
-  case 'g':
-    gravity = ( gravity === 2 ) ? 0 : gravity + 1;
-    dirty = true;
-    break;
-  case 't':
-    threeDee = !threeDee;
-    dirty = true;
-    break;
-  default:
-    break;
-}
-return !dirty || digitalRain.resetRain( colorsIndex, gravity, threeDee );
+  // rainMessages
+  if( e.key == 'm' ) {
+    if ( rainMessages.status === "active" ){
+      rainMessages.stopMessage();
+    }
+    else {
+      rainMessages.initialize();
+    }
+  }
+
+  // digitalRain
+  let { colors, colorsIndex, gravity, threeDee } = digitalRain;
+  let dirty = false;
+  switch( e.key ){
+    case 'c':
+      colorsIndex = ( colorsIndex < colors.length - 1 ) ? colorsIndex + 1 : -1;
+      dirty = true;
+      break;
+    case 'g':
+      gravity = ( gravity === 2 ) ? 0 : gravity + 1;
+      dirty = true;
+      break;
+    case 't':
+      threeDee = !threeDee;
+      dirty = true;
+      break;
+    default:
+      break;
+  }
+  return !dirty || digitalRain.resetRain( colorsIndex, gravity, threeDee );
 }, false );

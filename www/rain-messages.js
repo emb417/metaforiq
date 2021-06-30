@@ -5,12 +5,6 @@ const rainMessages = {
       rainMessages.context.clearRect( 0, 0, rainMessages.canvas.width, rainMessages.canvas.height );
     }, delay );
   },
-  help: [
-    "swipe left to change colors",
-    "swipe up to change gravity",
-    "swipe down to change 2d/3d effect",
-    "swipe right to toggle messages",
-  ],
   initialize: function( fontSize = 32, fontFace = 'symbol', messageX = 0, messageY = 0, typingSpeed = 42 ) {
     this.fontSize = fontSize;
     this.fontFace = fontFace;
@@ -94,6 +88,9 @@ const rainMessages = {
     "Facing all that you fear will free you from yourself.",
   ],
   startMessage: function() {
+    if ( this.status === "active" ){
+      this.stopMessage();
+    }
     this.status = "active";
     this.context.font = `small-caps ${ this.fontSize }pt ${ this.fontFace }`;
     this.context.fillStyle = 'white';
@@ -104,10 +101,8 @@ const rainMessages = {
     }
     this.doMessage = setInterval( () => {
       const message = rainMessages.messages[ randomArrayIndex( rainMessages.messages.length ) ];
-      if( helpMessages.status !== "active" ) {
-        rainMessages.typing( message, rainMessages.messageX, rainMessages.messageY, ( rainMessages.fontSize * 1.3 ), rainMessages.messageX );
-        rainMessages.clearMessage( 6000 );
-      }
+      rainMessages.typing( message, rainMessages.messageX, rainMessages.messageY, ( rainMessages.fontSize * 1.3 ), rainMessages.messageX );
+      rainMessages.clearMessage( 6000 );
     }, 9000 );
   },
   stopMessage: function() {
