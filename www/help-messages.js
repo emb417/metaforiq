@@ -11,10 +11,12 @@ const helpMessages = {
     this.messageX = messageX;
     this.messageY = messageY;
     this.typingSpeed = typingSpeed;
-    this.messages[0] = `${ helpMessages.isMobileDevice() ? 'swipe up' : 'press g' } to change gravity`;
-    this.messages[1] = `${ helpMessages.isMobileDevice() ? 'swipe right' : 'press m' } to toggle messages`;
-    this.messages[2] = `${ helpMessages.isMobileDevice() ? 'swipe down' : 'press t' } to change 2d/3d effect`;
-    this.messages[3] = `${ helpMessages.isMobileDevice() ? 'swipe left' : 'press c' } to change colors`;
+    this.messages.push( "Welcome to Metaforiq" );
+    this.messages.push( "Some hints for you..." );
+    this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe up' : 'press g' } to change gravity` );
+    this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe right' : 'press m' } to toggle messages` );
+    this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe down' : 'press t' } to change 2d/3d effect` );
+    this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe left' : 'press c' } to change colors` );
     const cnvs = this.canvas;
     this.context = cnvs.getContext( '2d', { desynchronized: true } );
     cnvs.setAttribute( 'height', window.innerHeight );

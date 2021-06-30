@@ -97,13 +97,17 @@ const rainMessages = {
     this.status = "active";
     this.context.font = `small-caps ${ this.fontSize }pt ${ this.fontFace }`;
     this.context.fillStyle = 'white';
-    const message = this.messages[ randomArrayIndex( this.messages.length ) ];
-    this.typing( message, this.messageX, this.messageY, ( this.fontSize * 1.3 ), this.messageX );
-    this.clearMessage( 6000 );
+    if( helpMessages.status !== "active" ) {
+      const message = this.messages[ randomArrayIndex( this.messages.length ) ];
+      this.typing( message, this.messageX, this.messageY, ( this.fontSize * 1.3 ), this.messageX );
+      this.clearMessage( 6000 );
+    }
     this.doMessage = setInterval( () => {
       const message = rainMessages.messages[ randomArrayIndex( rainMessages.messages.length ) ];
-      rainMessages.typing( message, rainMessages.messageX, rainMessages.messageY, ( rainMessages.fontSize * 1.3 ), rainMessages.messageX );
-      rainMessages.clearMessage( 6000 );
+      if( helpMessages.status !== "active" ) {
+        rainMessages.typing( message, rainMessages.messageX, rainMessages.messageY, ( rainMessages.fontSize * 1.3 ), rainMessages.messageX );
+        rainMessages.clearMessage( 6000 );
+      }
     }, 9000 );
   },
   stopMessage: function() {
@@ -137,4 +141,4 @@ const rainMessages = {
   }
 };
 
-rainMessages.initialize();
+setTimeout( rainMessages.initialize(), 1000 );
