@@ -1,4 +1,4 @@
-# metaforiq v2.2
+# metaforiq v2.2.1
 
 ## digital rain in a browser
 
@@ -16,20 +16,23 @@
 * v2.0 - refactored digital-rain.js, added more colors, and a gravity option (up)
 * v2.1 - delay rain messages until after help messages
 * v2.2 - added keypress h and two-finger tap to toggle help messages
+* v2.2.1 - added new relic browser agent
 
 ### Mobile Experience using Touch
 
-* swipe left to change colors
 * swipe up to change gravity
-* swipe right to start messages
-* swipe down to change 2d/3d effect
+* swipe left to change colors
+* swipe down to toggle 2d/3d effect
+* swipe right to toggle messages
+* two-finger tap to toggle help
 
 ### Desktop Experience using Keyboard
 
+* keypress g to change gravity
 * keypress c to change color scheme
-* keypress g to toggle gravity on or off
 * keypress t to toggle 2d/3d effect
 * keypress m to toggle messages
+* keypress h to toggle help
 
 ## theMatrix.initialize and resetRain accept 3 params
 
