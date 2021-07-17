@@ -13,11 +13,12 @@ const helpMessages = {
     this.typingSpeed = typingSpeed;
     if( this.messages.length === 0 ){
       this.messages.push( "Welcome to Metaforiq" );
-      this.messages.push( "Some hints for you..." );
+      this.messages.push( "Jedi Fortune Quotes" );
       this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe up' : 'press g' } to change gravity` );
       this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe left' : 'press c' } to change colors` );
       this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe down' : 'press t' } to change 2d/3d effect` );
       this.messages.push( `${ helpMessages.isMobileDevice() ? 'swipe right' : 'press m' } to toggle messages` );
+      this.messages.push( `${ helpMessages.isMobileDevice() ? 'two finger tap' : 'press h' } to toggle help` );
     }
     const cnvs = this.canvas;
     this.context = cnvs.getContext( '2d', { desynchronized: true } );
