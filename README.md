@@ -1,4 +1,4 @@
-# metaforiq v2.2.2
+# metaforiq v2.3.0
 
 ## digital rain in a browser
 
@@ -18,6 +18,7 @@
 * v2.2 - added keypress h and two-finger tap to toggle help messages
 * v2.2.1 - added new relic browser agent
 * v2.2.2 - added help hint and quote messages
+* v2.3.0 - added holiday colors
 
 ### Mobile Experience using Touch
 

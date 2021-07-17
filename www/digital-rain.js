@@ -14,13 +14,22 @@
       ['255,0,255'],  // purple
       ['0,255,0', '255,255,0'],  // green, yellow
       ['0,0,255'],  // blue
+      ['0,255,0', '255,255,255'],  // green, white
       ['255,0,255', '255,255,0'],  // purple, yellow
       ['0,255,0'],  // green
       ['255,0,0', '255,255,255', '0,0,255'], // red, white, blue
       ['255,255,0'],  // yellow
-      ['0,255,0', '255,255,255'],  // green, white
+      ['0,255,0', '255,0,255'],  // green, purple
       ['0,255,255'],  // aqua
       ['0,255,0', '255,0,0'],  // green, red
+    ],
+    colorHolidays:[
+      { "month": "2", "date": "14", "color": 0 },
+      { "month": "3", "date": "17", "color": 6 },
+      { "month": "7", "date": "4", "color": 11 },
+      { "month": "10", "date": "31", "color": 13 },
+      { "month": "11", "date": "25", "color": 3 },
+      { "month": "12", "date": "25", "color": 15 },
     ],
     fontFace: 'symbol',
     fontFadeSpeed: 0.2,
@@ -28,8 +37,9 @@
     fontSizeOffsets: [ 0.3, 0.6, 1.0, 1.3, 1.6, 2.0 ],
     fontSpacing: 4,
     initialFontSize: 10,
-    initialize: function( colorsIndex = 4, gravity = 0, threeDee = true ) {
-      this.colorsIndex = colorsIndex;
+    initialize: function( colorsIndex, gravity = 0, threeDee = true ) {
+      this.colorsIndex = this.selectColorSet();
+      console.log(this.colorsIndex);
       this.gravity = gravity;
       this.threeDee = threeDee;
       const cnvs = digitalRain.canvas;
@@ -40,6 +50,20 @@
       ctx.fillStyle = `rgba( ${ digitalRain.themeColor } )`;
       ctx.fillRect( 0, 0, cnvs.width, cnvs.height );
       this.makeItRain();
+    },
+    selectColorSet: function() {
+      const currentDate = new Date();
+      const month = currentDate.getMonth() + 1
+      const date = currentDate.getDate()
+      let color = -1;
+      for( let i = 0; i < this.colorHolidays.length; i++ ){
+        const ci = this.colorHolidays[i];
+        if( ci.month == month && ci.date == date ){
+          color =  ci.color;
+        }
+      }
+      color = ( color === -1 ) ? randomArrayIndex( this.colors.length ) : color;
+      return color;
     },
     makeItRain: function() {
       /**** 
