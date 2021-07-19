@@ -6,22 +6,22 @@
     canvas: document.getElementById( 'digital-rain' ),
     charset: Array.from( new Array(53), (x, i) => String.fromCharCode( i + 65382 ) ),
     colors: [
-      ['255,0,0', '248,36,164'], // red, pink
-      ['0,255,255', '255,0,255', '255,95,31'],  // aqua, purple, orange
-      ['255,0,0'], // red
-      ['255,95,31', '255,255,255', '255,255,0'],  // orange, white, yellow
-      ['255,0,0','0,0,255'], // red, blue
-      ['255,0,255'],  // purple
-      ['0,255,0', '255,255,0'],  // green, yellow
-      ['0,0,255'],  // blue
-      ['0,255,0', '255,255,255'],  // green, white
-      ['255,0,255', '255,255,0'],  // purple, yellow
-      ['0,255,0'],  // green
-      ['255,0,0', '255,255,255', '0,0,255'], // red, white, blue
-      ['255,255,0'],  // yellow
-      ['0,255,0', '255,0,255'],  // green, purple
-      ['0,255,255'],  // aqua
-      ['0,255,0', '255,0,0'],  // green, red
+      ['255,0,0', '248,36,164'], // 0 - red, pink
+      ['0,255,255', '255,0,255', '255,95,31'],  // 1 - aqua, purple, orange
+      ['255,0,0'], // 2 - red
+      ['255,95,31', '255,255,255', '255,255,0'],  // 3 - orange, white, yellow
+      ['255,0,0','0,0,255'], // 4 - red, blue
+      ['255,0,255'],  // 5 - purple
+      ['0,255,0', '255,255,0'],  // 6 - green, yellow
+      ['0,0,255'],  // 7 - blue
+      ['0,255,0', '255,255,255'],  // 8 - green, white
+      ['255,0,255', '255,255,0'],  // 9 - purple, yellow
+      ['0,255,0'],  // 10 - green
+      ['255,0,0', '255,255,255', '0,0,255'], // 11 - red, white, blue
+      ['255,255,0'],  // 12 - yellow
+      ['0,255,0', '255,0,255'],  // 13 - green, purple
+      ['0,255,255'],  // 14 - aqua
+      ['0,255,0', '255,0,0'],  // 15 - green, red
     ],
     colorHolidays:[
       { "date": "2/14/2022", "color": 0 },
@@ -53,19 +53,6 @@
       ctx.fillStyle = `rgba( ${ digitalRain.themeColor } )`;
       ctx.fillRect( 0, 0, cnvs.width, cnvs.height );
       this.makeItRain();
-    },
-    selectColorSet: function() {
-      const currentDate = new Date().setHours(0,0,0,0);
-      let color;
-      // look for holiday match and set initial color
-      for( let i = 0; i < this.colorHolidays.length; i++ ){
-        const ci = this.colorHolidays[i];
-        const holidayDate = new Date( ci.date ).setHours(0,0,0,0);
-        if( holidayDate == currentDate ){
-          color =  ci.color;
-        }
-      }
-      return color ?? randomArrayIndex( this.colors.length );
     },
     makeItRain: function() {
       /**** 
@@ -116,6 +103,19 @@
     resetRain: function( colorsIndex, gravity, threeDee ) {
       clearInterval( this.rainDrops );
       this.initialize( colorsIndex, gravity, threeDee );
+    },
+    selectColorSet: function() {
+      const currentDate = new Date().setHours(0,0,0,0);
+      let color;
+      // look for holiday match and set initial color
+      for( let i = 0; i < this.colorHolidays.length; i++ ){
+        const ci = this.colorHolidays[i];
+        const holidayDate = new Date( ci.date ).setHours(0,0,0,0);
+        if( holidayDate == currentDate ){
+          color =  ci.color;
+        }
+      }
+      return color ?? randomArrayIndex( this.colors.length );
     },
     selectFontColor: function() { 
       const fontColors = this.colors[ ( this.colorsIndex === -1 ) ? randomArrayIndex( this.colors.length ) : this.colorsIndex ];

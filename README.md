@@ -22,6 +22,7 @@
 * v2.3.1 - removed new relic agent and console log
 * v2.3.2 - better date compare and persist color thru gravity and 3d toggles
 * v2.3.3 - ga4 event tracking for interactions
+* v2.3.4 - readme update
 
 ### Mobile Experience using Touch
 
@@ -39,7 +40,7 @@
 * keypress m to toggle messages
 * keypress h to toggle help
 
-## theMatrix.initialize and resetRain accept 3 params
+## digitalRain.initialize and resetRain both accept 3 params
 
 ```javascript
 digitalRain.initialize( colorsIndex, gravity, threeDee );
@@ -49,31 +50,32 @@ digitalRain.initialize( colorsIndex, gravity, threeDee );
 
 ### @param {Number} colorsIndex
 
-one of the preset array cells, default 4 (red, blue)
+set to choose one of the colors by array cell, defaults to random color set
 
 ```javascript
-'colorsIndex': -1,
+'colorsIndex': -1, //makes each set of chars a random color
 ```
 
 Here is the related set of colors to choose from:
 
 ```javascript
 colors: [
-  ['255,0,0', '248,36,164'], // red, pink
-  ['0,255,255', '255,0,255', '255,95,31'],  // aqua, purple, orange
-  ['255,0,0'], // red
-  ['255,95,31', '255,255,255', '255,255,0'],  // orange, white, yellow
-  ['255,0,0','0,0,255'], // red, blue
-  ['255,0,255'],  // purple
-  ['0,255,0', '255,255,0'],  // green, yellow
-  ['0,0,255'],  // blue
-  ['255,0,255', '255,255,0'],  // purple, yellow
-  ['0,255,0'],  // green
-  ['255,0,0', '255,255,255', '0,0,255'], // red, white, blue
-  ['255,255,0'],  // yellow
-  ['0,255,0', '255,255,255'],  // green, white
-  ['0,255,255'],  // aqua
-  ['0,255,0', '255,0,0'],  // green, red
+  ['255,0,0', '248,36,164'], // 0 - red, pink
+  ['0,255,255', '255,0,255', '255,95,31'],  // 1 - aqua, purple, orange
+  ['255,0,0'], // 2 - red
+  ['255,95,31', '255,255,255', '255,255,0'],  // 3 - orange, white, yellow
+  ['255,0,0','0,0,255'], // 4 - red, blue
+  ['255,0,255'],  // 5 - purple
+  ['0,255,0', '255,255,0'],  // 6 - green, yellow
+  ['0,0,255'],  // 7 - blue
+  ['0,255,0', '255,255,255'],  // 8 - green, white
+  ['255,0,255', '255,255,0'],  // 9 - purple, yellow
+  ['0,255,0'],  // 10 - green
+  ['255,0,0', '255,255,255', '0,0,255'], // 11 - red, white, blue
+  ['255,255,0'],  // 12 - yellow
+  ['0,255,0', '255,0,255'],  // 13 - green, purple
+  ['0,255,255'],  // 14 - aqua
+  ['0,255,0', '255,0,0'],  // 15 - green, red
 ]
 ```
 
@@ -91,6 +93,24 @@ defaults to true, randomizes font sizes for 3D effect
 
 ```javascript
 'threeDee': true,
+```
+
+## digitalRain.colorHolidays
+
+Is an array of objects that contain a date and colorIndex, selectColorSet will look for matches if colorsIndex isn't passed in initialize()
+
+```javascript
+colorHolidays:[
+  { "date": "2/14/2022", "color": 0 },
+  { "date": "3/17/2022", "color": 6 },
+  { "date": "7/4/2022", "color": 11 },
+  { "date": "10/31/2021", "color": 13 },
+  { "date": "11/25/2021", "color": 3 },
+  { "date": "12/24/2021", "color": 15 },
+  { "date": "12/25/2021", "color": 15 },
+  { "date": "12/31/2021", "color": -1 },
+  { "date": "1/1/2022", "color": -1 },
+]
 ```
 
 ## rain messages in a browser
