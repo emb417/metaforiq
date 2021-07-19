@@ -21,6 +21,7 @@
 * v2.3.0 - added holiday colors
 * v2.3.1 - removed new relic agent and console log
 * v2.3.2 - better date compare and persist color thru gravity and 3d toggles
+* v2.3.3 - ga4 event tracking for interactions
 
 ### Mobile Experience using Touch
 
