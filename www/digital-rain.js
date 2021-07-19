@@ -24,12 +24,15 @@
       ['0,255,0', '255,0,0'],  // green, red
     ],
     colorHolidays:[
-      { "month": "2", "date": "14", "color": 0 },
-      { "month": "3", "date": "17", "color": 6 },
-      { "month": "7", "date": "4", "color": 11 },
-      { "month": "10", "date": "31", "color": 13 },
-      { "month": "11", "date": "25", "color": 3 },
-      { "month": "12", "date": "25", "color": 15 },
+      { "date": "2/14/2022", "color": 0 },
+      { "date": "3/17/2022", "color": 6 },
+      { "date": "7/4/2022", "color": 11 },
+      { "date": "10/31/2021", "color": 13 },
+      { "date": "11/25/2021", "color": 3 },
+      { "date": "12/24/2021", "color": 15 },
+      { "date": "12/25/2021", "color": 15 },
+      { "date": "12/31/2021", "color": -1 },
+      { "date": "1/1/2022", "color": -1 },
     ],
     fontFace: 'symbol',
     fontFadeSpeed: 0.2,
@@ -38,31 +41,31 @@
     fontSpacing: 4,
     initialFontSize: 10,
     initialize: function( colorsIndex, gravity = 0, threeDee = true ) {
-      this.colorsIndex = this.selectColorSet();
+      this.colorsIndex = colorsIndex ?? this.selectColorSet();
       this.gravity = gravity;
       this.threeDee = threeDee;
       const cnvs = digitalRain.canvas;
       // set background, height and width
       cnvs.setAttribute('height', window.innerHeight);
       cnvs.setAttribute('width', window.innerWidth);
+      // set context, fill with black
       const ctx = this.context = cnvs.getContext('2d', { desynchronized: true });
       ctx.fillStyle = `rgba( ${ digitalRain.themeColor } )`;
       ctx.fillRect( 0, 0, cnvs.width, cnvs.height );
       this.makeItRain();
     },
     selectColorSet: function() {
-      const currentDate = new Date();
-      const month = currentDate.getMonth() + 1
-      const date = currentDate.getDate()
-      let color = -1;
+      const currentDate = new Date().setHours(0,0,0,0);
+      let color;
+      // look for holiday match and set initial color
       for( let i = 0; i < this.colorHolidays.length; i++ ){
         const ci = this.colorHolidays[i];
-        if( ci.month == month && ci.date == date ){
+        const holidayDate = new Date( ci.date ).setHours(0,0,0,0);
+        if( holidayDate == currentDate ){
           color =  ci.color;
         }
       }
-      color = ( color === -1 ) ? randomArrayIndex( this.colors.length ) : color;
-      return color;
+      return color ?? randomArrayIndex( this.colors.length );
     },
     makeItRain: function() {
       /**** 
