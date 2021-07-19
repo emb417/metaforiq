@@ -39,7 +39,6 @@
     initialFontSize: 10,
     initialize: function( colorsIndex, gravity = 0, threeDee = true ) {
       this.colorsIndex = this.selectColorSet();
-      console.log(this.colorsIndex);
       this.gravity = gravity;
       this.threeDee = threeDee;
       const cnvs = digitalRain.canvas;

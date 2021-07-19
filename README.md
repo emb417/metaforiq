@@ -19,6 +19,7 @@
 * v2.2.1 - added new relic browser agent
 * v2.2.2 - added help hint and quote messages
 * v2.3.0 - added holiday colors
+* v2.3.1 - removed new relic agent and console log
 
 ### Mobile Experience using Touch
 
