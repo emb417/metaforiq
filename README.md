@@ -23,6 +23,7 @@
 * v2.3.2 - better date compare and persist color thru gravity and 3d toggles
 * v2.3.3 - ga4 event tracking for interactions
 * v2.3.4 - readme update
+* v2.3.5 - tracking event tweak
 
 ### Mobile Experience using Touch
 

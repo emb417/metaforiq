@@ -1,10 +1,7 @@
 /**********************
  * Tracking Events
  */
-const trackInteraction = ( type = "other", dims = {} ) => {
-  console.log(type, dims);
-  gtag( 'event', type, dims );
-}
+const trackInteraction = ( type, dims = {} ) => gtag( 'event', type, dims );
 
 /*****************************
  * Resize Interaction
