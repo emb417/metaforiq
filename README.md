@@ -24,6 +24,7 @@
 * v2.3.3 - ga4 event tracking for interactions
 * v2.3.4 - readme update
 * v2.3.5 - tracking event tweak
+* v3.0.0 - refactored messages and added aurebesh
 
 ### Mobile Experience using Touch
 
