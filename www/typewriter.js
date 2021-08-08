@@ -124,9 +124,9 @@ help.initialize();
  * 
  */
 const aurebeshCharset = ` abcdefg hijklmnop qrstuv wxyz 1234567890 {}[]:;| .,'"?!$ @#%^&*() -_=+ /><\\`;
-const aurebesh = new Typewriter( "aurebesh", { 'startX': 70, 'startY': window.innerHeight - 80, 'fontFace': 'Aurebesh' } );
-aurebesh.messages = helpMessages;
-aurebesh.initialize();
+const helpAurebesh = new Typewriter( "helpAurebesh", { 'startX': 70, 'startY': window.innerHeight - 80, 'fontFace': 'Aurebesh' } );
+helpAurebesh.messages = helpMessages;
+helpAurebesh.initialize();
 
 
 /********************** 

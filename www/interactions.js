@@ -83,10 +83,12 @@ document.addEventListener( 'touchend', e => {
   if ( e.changedTouches.length > 1 ){ 
     if( help.status === "active" ){
       help.stopMessage();
+      helpAurebesh.stopMessage();
       trackInteraction( 'stop_help' );
     }
     else {
       help.initialize();
+      helpAurebesh.initialize();
       trackInteraction( 'start_help' );
     }
   }
@@ -102,10 +104,12 @@ window.addEventListener('keydown', e => {
   if ( e.key == 'h' ) {
     if( help.status === "active" ){
       help.stopMessage();
+      helpAurebesh.stopMessage();
       trackInteraction( 'stop_help' );
     }
     else {
       help.initialize();
+      helpAurebesh.initialize();
       trackInteraction( 'start_help' );
     }
   }
