@@ -20,17 +20,18 @@
       gtag('config', 'G-GFYFPLCX94');
     </script>
     <style>
+      @font-face {
+        font-family: 'Aurebesh';
+        src: url('AurebeshAF-Canon.otf');
+      }
       html, body { margin: 0; padding: 0; overflow: hidden; display: block; }
-      canvas { position: absolute; left: 0px; top: 0px; cursor: not-allowed; touch-action: none; }
+      canvas { position: absolute; cursor: not-allowed; touch-action: none; }
     </style>
   </head>
   <body>
-    <canvas id='digital-rain' style='z-index: 1; background: black;'></canvas>
-    <canvas id='help-messages' style='z-index: 2; background: transparent;'></canvas>
-    <canvas id='rain-messages' style='z-index: 3; background: transparent;'></canvas>
+    <canvas id='digital-rain' style='z-index: 0; background: black;'></canvas>
   </body>
   <script src='digital-rain.js'></script>
-  <script src='help-messages.js'></script>
-  <script src='rain-messages.js'></script>
+  <script src='typewriter.js'></script>
   <script src='interactions.js'></script>
 </html>

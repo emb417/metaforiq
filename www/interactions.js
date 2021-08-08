@@ -9,9 +9,11 @@ const trackInteraction = ( type, dims = {} ) => gtag( 'event', type, dims );
  */
 
 window.addEventListener('resize', e => {
-  rainMessages.stopMessage();
+  inspirational.stopMessage();
+  inspirationalAurebesh.stopMessage();
   digitalRain.resetRain( digitalRain.colorsIndex, digitalRain.gravity, digitalRain.threeDee );
-  rainMessages.initialize();
+  inspirational.initialize();
+  inspirationalAurebesh.initialize();
   trackInteraction( 'resize', {
     'colorsIndex': digitalRain.colorsIndex,
     'gravity': digitalRain.gravity,
@@ -51,11 +53,14 @@ document.addEventListener('touchmove', e => {
         digitalRain.resetRain( colorsIndex, gravity, threeDee );
         trackInteraction( 'change_color', { colorsIndex, gravity, threeDee } );
       } else {
-        if ( rainMessages.status === "active" ) {
-          rainMessages.stopMessage();
+        if ( inspirational.status === "active" ) {
+          inspirational.stopMessage();
+          inspirationalAurebesh.stopMessage();
           trackInteraction( 'stop_messages' );
         } else {
-          rainMessages.initialize();
+          clearTimeout( startInspiring );
+          inspirational.initialize();
+          inspirationalAurebesh.initialize();
           trackInteraction( 'start_messages' );
         }
       }
@@ -76,12 +81,12 @@ document.addEventListener('touchmove', e => {
 
 document.addEventListener( 'touchend', e => {
   if ( e.changedTouches.length > 1 ){ 
-    if( helpMessages.status === "active" ){
-      helpMessages.stopMessage();
+    if( help.status === "active" ){
+      help.stopMessage();
       trackInteraction( 'stop_help' );
     }
     else {
-      helpMessages.initialize();
+      help.initialize();
       trackInteraction( 'start_help' );
     }
   }
@@ -93,26 +98,29 @@ document.addEventListener( 'touchend', e => {
  */
 
 window.addEventListener('keydown', e => {
-  // helpMessages
+  // help
   if ( e.key == 'h' ) {
-    if( helpMessages.status === "active" ){
-      helpMessages.stopMessage();
+    if( help.status === "active" ){
+      help.stopMessage();
       trackInteraction( 'stop_help' );
     }
     else {
-      helpMessages.initialize();
+      help.initialize();
       trackInteraction( 'start_help' );
     }
   }
 
-  // rainMessages
+  // inspirational
   if( e.key == 'm' ) {
-    if ( rainMessages.status === "active" ){
-      rainMessages.stopMessage();
+    if ( inspirational.status === "active" ){
+      inspirational.stopMessage();
+      inspirationalAurebesh.stopMessage();
       trackInteraction( 'stop_messages' );
     }
     else {
-      rainMessages.initialize();
+      clearTimeout( startInspiring );
+      inspirational.initialize();
+      inspirationalAurebesh.initialize();
       trackInteraction( 'start_messages' );
     }
   }
