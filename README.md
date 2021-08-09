@@ -117,18 +117,14 @@ colorHolidays:[
 ]
 ```
 
-## rain messages in a browser
+## typewriter
 
-rain-messages.js randomly selects and types a message from the messages array.
+typewriter.js is a class object used to create a canvas to write messages using a typewriter style rendering.  Included are a few implementations for showing help messages, currently related to the interaction options, and inspirational messages from sw: tcw.
 
 ## interactions for keyboard and touch devices
 
 interactions.js contains event listeners for various keypress and touch scenarios,
 more or less shuffling through preset options.
-
-## help
-
-help-messages.js contains a set of helpful messages, currently related to the interaction options
 
 ## analytics
 
