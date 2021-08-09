@@ -1,4 +1,4 @@
-# metaforiq v2.3.0
+# metaforiq v3.0.2
 
 ## digital rain in a browser
 
