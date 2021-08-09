@@ -1,6 +1,8 @@
-// random functions
-// const randomArrayIndex = ( length = 0 ) => Math.floor( Math.random() * length );
-// const randomRoll = ( size ) => Math.abs( Math.random() * size );
+/******************
+ * 
+ * DIGITAL RAIN
+ * 
+ */
 
 const digitalRain = {
   canvas: document.getElementById( 'digital-rain' ),
@@ -35,7 +37,7 @@ const digitalRain = {
     { "date": "1/1/2022", "color": -1 },
   ],
   fontFace: 'symbol',
-  fontFadeSpeed: 0.2,
+  fontFadeSpeed: 0.1,
   fontRenderSpeed: 80,
   fontSizeOffsets: [ 0.2, 0.5, 1.0, 1.5, 2.0 ],
   fontSpacing: 4,
@@ -64,8 +66,8 @@ const digitalRain = {
     const noc = this.numberOfColumns = Math.ceil( window.innerWidth / this.initialFontSize );
     const columns = Array.from( new Array( noc ), ( x, i ) => ( {
                         'fontColor': this.selectFontColor(),
-                        'gravity': this.gravity,
-                        'fontSize': this.initialFontSize,
+                        'gravity': this.selectGravity(),
+                        'fontSize': this.selectFontSize(),
                         'xPosition': ( i * this.initialFontSize ),
                         'yPosition': this.randomRoll( this.canvas.height ),
                       } ) );
@@ -88,11 +90,11 @@ const digitalRain = {
                     );
         // randomly decide to get new random starting position
         // OR draw next character below previous character
-        if( ( column.gravity && column.yPosition > ( self.canvas.height * self.randomRoll(20) ) )
+        if( ( column.gravity && column.yPosition > ( self.canvas.height * self.randomRoll(50) ) )
         || ( !column.gravity && column.yPosition < ( self.canvas.height / self.randomRoll(50) ) ) ) {
           column.fontColor = self.selectFontColor();
-          column.gravity = ( this.gravity === 2 ) ? Math.round( Math.random() ) : this.gravity;
-          column.fontSize = this.threeDee && this.initialFontSize * this.fontSizeOffsets[ self.randomArrayIndex(this.fontSizeOffsets.length) ] || this.initialFontSize;
+          column.gravity = self.selectGravity();
+          column.fontSize = self.selectFontSize();
           column.yPosition = self.randomRoll( self.canvas.height );
         }
         else {
@@ -123,6 +125,12 @@ const digitalRain = {
   selectFontColor: function() { 
     const fontColors = this.colors[ ( this.colorsIndex === -1 ) ? this.randomArrayIndex( this.colors.length ) : this.colorsIndex ];
     return fontColors[ this.randomArrayIndex( fontColors.length ) ];
+  },
+  selectFontSize: function() {
+    return this.threeDee && this.initialFontSize * this.fontSizeOffsets[ this.randomArrayIndex(this.fontSizeOffsets.length) ] || this.initialFontSize;
+  },
+  selectGravity: function() {
+    return ( this.gravity === 2 ) ? Math.round( Math.random() ) : this.gravity;
   }
 };
 

@@ -26,6 +26,7 @@
 * v2.3.5 - tracking event tweak
 * v3.0.0 - refactored messages and added aurebesh
 * v3.0.1 - fixed help for aurebesh
+* v3.0.2 - fixed initial gravity, 3d, and aurebesh rendering
 
 ### Mobile Experience using Touch
 

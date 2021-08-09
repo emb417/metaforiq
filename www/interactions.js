@@ -9,9 +9,18 @@ const trackInteraction = ( type, dims = {} ) => gtag( 'event', type, dims );
  */
 
 window.addEventListener('resize', e => {
+  help.stopMessage();
+  helpAurebesh.stopMessage();  
   inspirational.stopMessage();
   inspirationalAurebesh.stopMessage();
   digitalRain.resetRain( digitalRain.colorsIndex, digitalRain.gravity, digitalRain.threeDee );
+  help.initialize();
+  helpAurebesh.startY = window.innerHeight - 80;
+  helpAurebesh.initialize();
+  inspirational.startX = inspirationalAurebesh.startX = ( window.innerWidth / 5 );
+  inspirational.endX = inspirationalAurebesh.endX = window.innerWidth - ( window.innerWidth / 5 );
+  inspirational.startY = ( window.innerHeight / 4 );
+  inspirationalAurebesh.startY = window.innerHeight - ( window.innerHeight / 3 );
   inspirational.initialize();
   inspirationalAurebesh.initialize();
   trackInteraction( 'resize', {
