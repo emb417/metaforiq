@@ -37,7 +37,7 @@ const digitalRain = {
     { "date": "1/1/2022", "color": -1 },
   ],
   fontFace: 'symbol',
-  fontFadeSpeed: 0.1,
+  fontFadeSpeed: 0.15,
   fontRenderSpeed: 80,
   fontSizeOffsets: [ 0.2, 0.5, 1.0, 1.5, 2.0 ],
   fontSpacing: 4,
