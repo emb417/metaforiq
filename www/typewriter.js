@@ -13,6 +13,7 @@ const Typewriter = function( id, opts ) {
     interval: 4000,
     fontSize: '16',
     fontFace: 'symbol',
+    cookieName: "typewriter",
     ...opts
   };
   // create and append dom element
@@ -42,17 +43,39 @@ const Typewriter = function( id, opts ) {
       }
     },
     isMobileDevice: function() {
-      return ( typeof window.orientation !== "undefined" ) || ( navigator.userAgent.indexOf('IEMobile') !== -1 );
+      return ( typeof window.orientation !== "undefined" ) || ( navigator.userAgent.indexOf( 'IEMobile' ) !== -1 );
+    },
+    getCookie: function( cname ){
+      let name = cname + "=";
+      let decodedCookie = decodeURIComponent( document.cookie );
+      let ca = decodedCookie.split( ';' );
+      for( let i = 0; i <ca.length; i++ ) {
+        let c = ca[ i ];
+        while ( c.charAt( 0 ) == ' ' ) {
+          c = c.substring(1);
+        }
+        if ( c.indexOf( name ) == 0 ) {
+          return c.substring( name.length, c.length );
+        }
+      }
+      return 0;
+    },
+    setCookie: function( cname, cvalue ){
+      const d = new Date();
+      d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
+      let expires = "expires="+d.toUTCString();
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     },
     startMessage: function() {
       this.status = "active";
 
       // start message immediately
-      this.messagesIndex = ( this.messagesIndex === this.messages.length ) ? 0 : this.messagesIndex;
+      this.messagesIndex = parseInt( this.getCookie( this.cookieName ) );
       const message = this.messages[ this.messagesIndex ];
       this.typing( message );
       this.clearMessage( this, this.interval - 1000 );
       this.messagesIndex += 1;
+      this.setCookie( this.cookieName, this.messagesIndex );
 
       // loop thru remaining messages
       const self = this;
@@ -60,8 +83,14 @@ const Typewriter = function( id, opts ) {
         const message = self.messages[ self.messagesIndex ];
         self.typing( message );
         self.clearMessage( self, self.interval - 1000 );
-        if ( self.messagesIndex == self.messages.length ) { self.stopMessage(); }
-        else { self.messagesIndex += 1; }
+        if ( self.messagesIndex == self.messages.length ) {
+          self.setCookie( self.cookieName, 0 );
+          self.stopMessage();
+        }
+        else {
+          self.messagesIndex += 1;
+          self.setCookie( self.cookieName, self.messagesIndex );
+        }
       }, this.interval );
     },
     stopMessage: function() {
@@ -126,28 +155,34 @@ aurebeshFont.load().then( ( font ) => { document.fonts.add(font); } );
 /********************** 
  * 
  * HELP
- * 
+ *
  */
-const help = new Typewriter( "help", { 'startX': 70, 'startY': 80 } );
+const help = new Typewriter( "help", {
+  'startX': 70,
+  'startY': 80,
+  'cookieName': "helpIndex",
+} );
+
+const helpAurebesh = new Typewriter( "helpAurebesh", {
+  'startX': 70,
+  'startY': window.innerHeight - 80,
+  'fontFace': 'Aurebesh',
+  'cookieName': "helpAurebeshIndex",
+} );
+
 const helpMessages = [ "welcome to metaforiq" ];
 helpMessages.push( `${ help.isMobileDevice() ? 'swipe up' : 'press g' } to change gravity` );
 helpMessages.push( `${ help.isMobileDevice() ? 'swipe left' : 'press c' } to change colors` );
 helpMessages.push( `${ help.isMobileDevice() ? 'swipe down' : 'press t' } to change 2d/3d effect` );
 helpMessages.push( `${ help.isMobileDevice() ? 'swipe right' : 'press m' } to toggle messages` );
 helpMessages.push( `${ help.isMobileDevice() ? 'two finger tap' : 'press h' } to toggle help` );
-help.messages = helpMessages;
+help.messages = helpAurebesh.messages = helpMessages;
+help.messagesIndex = help.getCookie( help.cookieName );
+helpAurebesh.messagesIndex = helpAurebesh.getCookie( helpAurebesh.cookieName );
+help.status = helpAurebesh.status = ( help.getCookie( 'visited' ) != "" ) ? "active" : "disabled";
 help.initialize();
-
-/***********************
- * 
- * HELP IN AUREBESH
- * 
- */
-const aurebeshCharset = ` abcdefg hijklmnop qrstuv wxyz 1234567890 {}[]:;| .,'"?!$ @#%^&*() -_=+ /><\\`;
-const helpAurebesh = new Typewriter( "helpAurebesh", { 'startX': 70, 'startY': window.innerHeight - 80, 'fontFace': 'Aurebesh' } );
-helpAurebesh.messages = helpMessages;
 helpAurebesh.initialize();
-
+help.setCookie( 'visited', 1 );
 
 /********************** 
  * 
@@ -160,6 +195,7 @@ const inspirational = new Typewriter( "inspirational", {
   'startY': ( window.innerHeight / 4 ),
   interval: 6000,
   fontSize: 32,
+  'cookieName': "inspirationalIndex",
 } );
 
 const inspirationalAurebesh = new Typewriter( "inspirationalAurebesh", {
@@ -168,7 +204,8 @@ const inspirationalAurebesh = new Typewriter( "inspirationalAurebesh", {
   'startY': window.innerHeight - ( window.innerHeight / 3 ),
   interval: 6000,
   fontSize: 32,
-  fontFace: 'Aurebesh'
+  fontFace: 'Aurebesh',
+  'cookieName': "inspirationalAurebeshIndex",
 } );
 
 const inspirationalMessages = [ // from:sw:tcw
@@ -242,14 +279,17 @@ const inspirationalMessages = [ // from:sw:tcw
   "facing all that you fear will free you from yourself",
 ];
 inspirational.messages = inspirationalAurebesh.messages = inspirationalMessages;
+inspirational.messagesIndex = inspirational.getCookie( inspirational.cookieName );
+inspirationalAurebesh.messagesIndex =  inspirationalAurebesh.getCookie( inspirationalAurebesh.cookieName );
 
 const startInspiring = setTimeout( () => {
   inspirational.initialize();
   inspirationalAurebesh.initialize();
-}, 24000 );
+}, ( inspirational.getCookie( 'visited' ) != "" ) ? 1000 : 24000 );
 
 /*****************
  * 
+ * AUREBESH CHARSET abcdefghijklmnopqrstuvwxyz 1234567890 {}[]:;|.,'"?!$ @#%^&*()-_=+/><\
  * EOF
  * 
  */

@@ -28,6 +28,7 @@
 * v3.0.1 - fixed help for aurebesh
 * v3.0.2 - fixed initial gravity, 3d, and aurebesh rendering
 * v3.0.3 - shorter font tails...
+* v3.1.0 - on return visits start messages where left off and suppress help
 
 ### Mobile Experience using Touch
 
