@@ -71,7 +71,7 @@ const Typewriter = function( id, opts ) {
       this.status = "active";
 
       // start message immediately
-      this.messagesIndex = parseInt( this.getCookie( this.cookieName ) );
+      this.messagesIndex = ( parseInt( this.getCookie( this.cookieName ) ) >= this.messages.length ) ? 0 : parseInt( this.getCookie( this.cookieName ) );
       const message = this.messages[ this.messagesIndex ];
       this.typing( message );
       this.clearMessage( this, this.interval - this.gap );
@@ -84,7 +84,7 @@ const Typewriter = function( id, opts ) {
         const message = self.messages[ self.messagesIndex ];
         self.typing( message );
         self.clearMessage( self, self.interval - self.gap );
-        if ( self.messagesIndex == self.messages.length ) {
+        if ( self.messagesIndex >= self.messages.length ) {
           self.setCookie( self.cookieName, 0 );
           self.stopMessage();
         }
