@@ -33,6 +33,7 @@ Using only canvas and vanilla js, digital rain overlayed with inspirational mess
 * v3.1.0 - on return visits start messages where left off and suppress help
 * v3.2.0 - separated welcome and help messages
 * v3.2.1 - fixed out of bounds cookie values
+* v3.3.0 - progressive web app
 
 ### Mobile Experience using Touch
 
