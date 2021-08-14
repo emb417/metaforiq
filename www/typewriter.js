@@ -11,6 +11,7 @@ const Typewriter = function( id, opts ) {
     endX: window.innerWidth,
     startY: 0,
     interval: 4000,
+    gap: 1000,
     fontSize: '16',
     fontFace: 'symbol',
     cookieName: "typewriter",
@@ -73,7 +74,7 @@ const Typewriter = function( id, opts ) {
       this.messagesIndex = parseInt( this.getCookie( this.cookieName ) );
       const message = this.messages[ this.messagesIndex ];
       this.typing( message );
-      this.clearMessage( this, this.interval - 1000 );
+      this.clearMessage( this, this.interval - this.gap );
       this.messagesIndex += 1;
       this.setCookie( this.cookieName, this.messagesIndex );
 
@@ -82,7 +83,7 @@ const Typewriter = function( id, opts ) {
       this.doMessage = setInterval( () => {
         const message = self.messages[ self.messagesIndex ];
         self.typing( message );
-        self.clearMessage( self, self.interval - 1000 );
+        self.clearMessage( self, self.interval - self.gap );
         if ( self.messagesIndex == self.messages.length ) {
           self.setCookie( self.cookieName, 0 );
           self.stopMessage();
@@ -152,59 +153,107 @@ const Typewriter = function( id, opts ) {
 const aurebeshFont = new FontFace('Aurebesh', 'url(AurebeshAF-Canon.otf)');
 aurebeshFont.load().then( ( font ) => { document.fonts.add(font); } );
 
+/**********************
+ * 
+ * WELCOME
+ * 
+ */
+const welcomeConfig = {
+  'startX': 70,
+  'interval': 15000,
+  'gap': 12000,
+};
+
+ const welcome = new Typewriter( "welcome", {
+   ...welcomeConfig,
+  'startY': 80,
+  'cookieName': 'welcomeIndex',
+} );
+
+const welcomeAurebesh = new Typewriter( "welcomeAurebesh", {
+  ...welcomeConfig,
+  'startY': window.innerHeight - 80,
+  'fontFace': 'Aurebesh',
+  'cookieName': 'welcomeAurebeshIndex',
+} );
+
+const welcomeMessages = [];
+welcomeMessages.push( `${ welcome.isMobileDevice() ? 'two finger tap' : 'press h' } to toggle help` );
+welcomeMessages.push( "welcome to metaforiq" );
+welcome.messages = welcomeAurebesh.messages = welcomeMessages;
+welcome.initialize();
+welcomeAurebesh.initialize();
+
+setInterval( () => {
+  welcome.startMessage();
+  welcomeAurebesh.startMessage();
+}, 35000 );
+
 /********************** 
  * 
  * HELP
  *
  */
+const helpConfig = {
+  'startX': ( window.innerWidth / 5 ),
+  'endX': window.innerWidth - ( window.innerWidth / 5 ),
+  'interval': 6000,
+  'gap': 2000,
+};
+
 const help = new Typewriter( "help", {
-  'startX': 70,
-  'startY': 80,
+  ...helpConfig,
+  'startY': 120,
   'cookieName': "helpIndex",
 } );
 
 const helpAurebesh = new Typewriter( "helpAurebesh", {
-  'startX': 70,
-  'startY': window.innerHeight - 80,
+  ...helpConfig,
+  'startY': window.innerHeight - 120,
   'fontFace': 'Aurebesh',
   'cookieName': "helpAurebeshIndex",
 } );
 
-const helpMessages = [ "welcome to metaforiq" ];
+const helpMessages = [];
 helpMessages.push( `${ help.isMobileDevice() ? 'swipe up' : 'press g' } to change gravity` );
 helpMessages.push( `${ help.isMobileDevice() ? 'swipe left' : 'press c' } to change colors` );
 helpMessages.push( `${ help.isMobileDevice() ? 'swipe down' : 'press t' } to change 2d/3d effect` );
 helpMessages.push( `${ help.isMobileDevice() ? 'swipe right' : 'press m' } to toggle messages` );
-helpMessages.push( `${ help.isMobileDevice() ? 'two finger tap' : 'press h' } to toggle help` );
 help.messages = helpAurebesh.messages = helpMessages;
 help.messagesIndex = help.getCookie( help.cookieName );
 helpAurebesh.messagesIndex = helpAurebesh.getCookie( helpAurebesh.cookieName );
 help.status = helpAurebesh.status = ( help.getCookie( 'visited' ) != "" ) ? "active" : "disabled";
-help.initialize();
-helpAurebesh.initialize();
-help.setCookie( 'visited', 1 );
+
+const startHelping = setTimeout( () => {
+  help.initialize();
+  helpAurebesh.initialize();
+  help.setCookie( 'visited', 1 );
+}, ( help.getCookie( 'visited' ) != "" ) ? 0 : 6000 );
+
 
 /********************** 
  * 
  * INSPIRATIONAL
  * 
  */
-const inspirational = new Typewriter( "inspirational", {
+const inspirationalConfig = {
   'startX': ( window.innerWidth / 5 ),
   'endX': window.innerWidth - ( window.innerWidth / 5 ),
+  'interval': 10000,
+  'gap': 3000,
+  'fontSize': 32,
+};
+
+const inspirational = new Typewriter( "inspirational", {
+  ...inspirationalConfig,
   'startY': ( window.innerHeight / 4 ),
-  interval: 6000,
-  fontSize: 32,
   'cookieName': "inspirationalIndex",
 } );
 
 const inspirationalAurebesh = new Typewriter( "inspirationalAurebesh", {
-  'startX': ( window.innerWidth / 5 ),
-  'endX': window.innerWidth - ( window.innerWidth / 5 ),
+  ...inspirationalConfig,
   'startY': window.innerHeight - ( window.innerHeight / 3 ),
-  interval: 6000,
-  fontSize: 32,
-  fontFace: 'Aurebesh',
+  'fontFace': 'Aurebesh',
   'cookieName': "inspirationalAurebeshIndex",
 } );
 
@@ -285,7 +334,7 @@ inspirationalAurebesh.messagesIndex =  inspirationalAurebesh.getCookie( inspirat
 const startInspiring = setTimeout( () => {
   inspirational.initialize();
   inspirationalAurebesh.initialize();
-}, ( inspirational.getCookie( 'visited' ) != "" ) ? 1000 : 24000 );
+}, ( inspirational.getCookie( 'visited' ) != "" ) ? 1000 : 30000 );
 
 /*****************
  * 

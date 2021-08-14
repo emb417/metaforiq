@@ -1,6 +1,8 @@
-# metaforiq v3.0.3
+# metaforiq v3
 
-## digital rain in a browser
+## inspirational digital rain
+
+Using only canvas and vanilla js, digital rain overlayed with inspirational messages.
 
 ### Change Log
 
@@ -29,6 +31,7 @@
 * v3.0.2 - fixed initial gravity, 3d, and aurebesh rendering
 * v3.0.3 - shorter font tails...
 * v3.1.0 - on return visits start messages where left off and suppress help
+* v3.2.0 - separated welcome and help messages
 
 ### Mobile Experience using Touch
 
