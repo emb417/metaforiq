@@ -1,4 +1,17 @@
 /**********************
+ * 
+ * PWA
+ * 
+ */
+ window.onload = () => {
+  "use strict";
+
+  if ( "serviceWorker" in navigator ) {
+    navigator.serviceWorker.register( "/sw.js" );
+  }
+};
+
+/**********************
  * Tracking Events
  */
 const trackInteraction = ( type, dims = {} ) => gtag( 'event', type, dims );
